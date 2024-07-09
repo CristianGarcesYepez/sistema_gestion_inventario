@@ -4,8 +4,8 @@ class Categoria:
     def __init__(self):
         self.conexion = mysql.connector.connect(
             host="localhost",
-            user="tu_usuario",
-            password="tu_contraseña",
+            user="root",
+            password="",
             database="db_argamasa"
         )
         self.cursor = self.conexion.cursor()
