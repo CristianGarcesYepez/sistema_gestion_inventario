@@ -1,7 +1,13 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../app'))
+
+from producto import Producto  
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-from producto import Producto
-from categoria import Categoria  # Asegúrate de tener esta clase para gestionar las categorías
+from categoria import Categoria  
+
+# Resto del código para la clase GestionCategoria
 
 class GestionCategoria:
     def __init__(self, root):
