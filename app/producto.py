@@ -38,4 +38,10 @@ class Producto:
         nombre_busqueda = f"%{nombre}%"  # Añadir % para buscar coincidencias parciales
         self.cursor.execute(sql, (nombre_busqueda,))
         return self.cursor.fetchall()
+    
+    def obtener_productos_por_categoria(self, categoria):
+        sql = "SELECT * FROM productos WHERE categoria=%s"
+        valores = (categoria,)
+        self.cursor.execute(sql, valores)
+        return self.cursor.fetchall()
 

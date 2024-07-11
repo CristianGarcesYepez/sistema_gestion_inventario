@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../app'))
 
-from producto import Producto  
+from producto import Producto
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from categoria import Categoria  
@@ -60,11 +60,11 @@ class GestionCategoria:
         for widget in self.frame_categorias.winfo_children():
             widget.destroy()
         for cat in categorias:
-            btn_categoria = tk.Button(self.frame_categorias, text=cat[1], command=lambda c=cat[0]: self.mostrar_productos_categoria(c))
+            btn_categoria = tk.Button(self.frame_categorias, text=cat[1], command=lambda c=cat[1]: self.mostrar_productos_categoria(c))
             btn_categoria.pack(side=tk.LEFT, padx=5)
 
-    def mostrar_productos_categoria(self, id_categoria):
-        productos = self.producto.obtener_productos_por_categoria(id_categoria)
+    def mostrar_productos_categoria(self, categoria):
+        productos = self.producto.obtener_productos_por_categoria(categoria)
         for row in self.tree.get_children():
             self.tree.delete(row)
         for prod in productos:
