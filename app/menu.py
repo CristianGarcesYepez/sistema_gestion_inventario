@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import messagebox
 from gestion_inventario import GestionInventario  # Importar la clase GestionInventario
 from gestion_categoria import GestionCategoria
+from gestion_proveedores import GestionProveedores
 
 class MenuPrincipal:
     def __init__(self, root):
@@ -50,7 +51,10 @@ class MenuPrincipal:
         self.root.deiconify()  # Mostrar el menú principal nuevamente
 
     def abrir_proveedores(self):
-        messagebox.showinfo("Proveedores", "Abriendo Proveedores")
+        self.root.withdraw()
+        categoria_root = tk.Toplevel(self.root)
+        app = GestionProveedores(categoria_root)
+        categoria_root.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(categoria_root))
 
     def abrir_reportes(self):
         messagebox.showinfo("Reportes", "Abriendo Reportes")

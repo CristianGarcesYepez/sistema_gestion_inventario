@@ -27,7 +27,7 @@ class Producto:
         valores = (codigo,)
         self.cursor.execute(sql, valores)
         self.conexion.commit()
-
+    
     def obtener_productos(self):
         sql = "SELECT * FROM productos"
         self.cursor.execute(sql)
