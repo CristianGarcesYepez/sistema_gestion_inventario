@@ -33,8 +33,8 @@ class Categoria:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
-    def obtener_productos_por_categoria(self, id_categoria):
-        sql = "SELECT * FROM productos WHERE id_categoria=%s"
-        valores = (id_categoria,)
+    def obtener_productos_por_categoria(self, categoria):
+        sql = "SELECT * FROM productos WHERE categoria=%s"
+        valores = (categoria,)
         self.cursor.execute(sql, valores)
         return self.cursor.fetchall()

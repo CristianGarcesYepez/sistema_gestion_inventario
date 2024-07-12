@@ -63,8 +63,8 @@ class GestionCategoria:
             btn_categoria = tk.Button(self.frame_categorias, text=cat[1], command=lambda c=cat[0]: self.mostrar_productos_categoria(c))
             btn_categoria.pack(side=tk.LEFT, padx=5)
 
-    def mostrar_productos_categoria(self, id_categoria):
-        productos = self.producto.obtener_productos_por_categoria(id_categoria)
+    def mostrar_productos_categoria(self, categoria):
+        productos = self.categoria.obtener_productos_por_categoria(categoria)
         for row in self.tree.get_children():
             self.tree.delete(row)
         for prod in productos:
