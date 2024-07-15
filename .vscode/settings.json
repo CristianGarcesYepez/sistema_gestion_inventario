@@ -1,6 +1,7 @@
 {
     "python.analysis.extraPaths": [
         "./app",
-        "./model"
+        "./model",
+        "./reporte"
     ]
 }

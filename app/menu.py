@@ -1,11 +1,14 @@
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../reporte'))
+
 import tkinter as tk
 from tkinter import messagebox
-from gestion_inventario import GestionInventario  # Importar la clase GestionInventario
+from gestion_inventario import GestionInventario  
 from gestion_categoria import GestionCategoria
 from gestion_proveedores import GestionProveedores
+from gestion_reporte import GestionReporte
 
 class MenuPrincipal:
     def __init__(self, root):
@@ -57,7 +60,10 @@ class MenuPrincipal:
         categoria_root.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(categoria_root))
 
     def abrir_reportes(self):
-        messagebox.showinfo("Reportes", "Abriendo Reportes")
+        self.root.withdraw()
+        categoria_root = tk.Toplevel(self.root)
+        app = GestionReporte(categoria_root)
+        categoria_root.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(categoria_root))
 
     def confirmar_salida(self):
         respuesta = messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas salir?")

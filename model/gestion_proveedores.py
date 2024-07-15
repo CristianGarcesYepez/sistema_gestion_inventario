@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../app'))
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-from Proovedores import Proveedores
+from proveedores import Proveedores
 
 class GestionProveedores:
     def __init__(self,root):
