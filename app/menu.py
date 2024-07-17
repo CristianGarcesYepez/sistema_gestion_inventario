@@ -51,17 +51,18 @@ class MenuPrincipal:
         self.root.deiconify()  # Mostrar el menú principal nuevamente
 
     def abrir_proveedores(self):
-        messagebox.showinfo("Proveedores", "Abriendo Proveedores")
+        messagebox.showinfo("PROVEEDORES", "Abriendo Proveedores")
 
     def abrir_reportes(self):
-        messagebox.showinfo("Reportes", "Abriendo Reportes")
+        messagebox.showinfo("REPORTES", "Abriendo Reportes")
 
     def confirmar_salida(self):
         respuesta = messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas salir?")
         if respuesta:
-            self.root.quit()
+ 8           self.root.quit()
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = MenuPrincipal(root)
     root.mainloop()
+8
