@@ -18,7 +18,7 @@ class MenuPrincipal:
         self.frame_botones = tk.Frame(self.root)
         self.frame_botones.pack(pady=20)
 
-        self.btn_inventario = tk.Button(self.frame_botones, text="Inventario", command=self.abrir_inventario, width=20)
+        self.btn_inventario = tk.Button(self.frame_botones, text="Inventario", command=self.abrir_inventario, width=20, cursor="hand2")
         self.btn_inventario.grid(row=0, column=0, pady=5)
 
         self.btn_categoria = tk.Button(self.frame_botones, text="Categoría", command=self.abrir_categoria, width=20)
