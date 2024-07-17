@@ -18,19 +18,19 @@ class MenuPrincipal:
         self.frame_botones = tk.Frame(self.root)
         self.frame_botones.pack(pady=20)
 
-        self.btn_inventario = tk.Button(self.frame_botones, text="Inventario", command=self.abrir_inventario, width=20, cursor="hand2")
+        self.btn_inventario = tk.Button(self.frame_botones, text="Inventario", command=self.abrir_inventario, width=30, height=2, cursor="hand2")
         self.btn_inventario.grid(row=0, column=0, pady=5)
 
-        self.btn_categoria = tk.Button(self.frame_botones, text="Categoría", command=self.abrir_categoria, width=20)
+        self.btn_categoria = tk.Button(self.frame_botones, text="Categoría", command=self.abrir_categoria, width=30, height=2, cursor="hand2")
         self.btn_categoria.grid(row=1, column=0, pady=5)
 
-        self.btn_proveedores = tk.Button(self.frame_botones, text="Proveedores", command=self.abrir_proveedores, width=20)
+        self.btn_proveedores = tk.Button(self.frame_botones, text="Proveedores", command=self.abrir_proveedores, width=30, height=2, cursor="hand2")
         self.btn_proveedores.grid(row=2, column=0, pady=5)
 
-        self.btn_reportes = tk.Button(self.frame_botones, text="Reportes", command=self.abrir_reportes, width=20)
+        self.btn_reportes = tk.Button(self.frame_botones, text="Reportes", command=self.abrir_reportes, width=30, height=2, cursor="hand2")
         self.btn_reportes.grid(row=3, column=0, pady=5)
 
-        self.btn_salir = tk.Button(self.frame_botones, text="Salir", command=self.confirmar_salida, width=20)
+        self.btn_salir = tk.Button(self.frame_botones, text="Salir", command=self.confirmar_salida, width=30, height=2, cursor="hand2")
         self.btn_salir.grid(row=4, column=0, pady=5)
 
     def abrir_inventario(self):
