@@ -21,17 +21,17 @@ class GenerarReporte:
 
             # Crear la consulta SQL
             query = """
-                SELECT p.codigo, p.descripcion, c.nombre, p.cantidad, p.precio, pr.nombre_proveedor
+                SELECT p.codigo, p.descripcion, c.nombre_categoria, p.cantidad, p.precio, p.proveedor
                 FROM productos p
-                JOIN categorias c ON p.categoria_id = c.id_categoria
-                JOIN proveedores pr ON p.proveedor_id = pr.id_proveedor
-                WHERE p.fecha >= %s AND p.fecha <= %s
+                JOIN categorias c ON p.categoria = c.nombre_categoria
+                JOIN proveedores pr ON p.proveedor = pr.nombre_proveedor
+                WHERE p.fecha_ultimo_ingreso >= %s AND p.fecha_ultimo_ingreso <= %s
             """
 
             params = [self.fecha_desde, self.fecha_hasta]
 
             if self.categoria != "Todas":
-                query += " AND c.nombre = %s"
+                query += " AND c.nombre_categoria = %s"
                 params.append(self.categoria)
 
             cursor.execute(query, params)

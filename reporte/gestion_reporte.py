@@ -4,9 +4,9 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../app'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 
 import tkinter as tk
-from producto import Producto
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
+from producto import Producto
 from generar_reporte import GenerarReporte
 from gestion_proveedores import GestionProveedores
 
@@ -15,6 +15,8 @@ class GestionReporte:
         self.root = root
         self.root.title("Reportes - Ferretería Argamasa")
         self.root.geometry("800x600")
+
+        self.producto = Producto()
 
         # Título
         self.label_titulo = tk.Label(self.root, text="REPORTES", font=("Arial", 24))
@@ -42,32 +44,42 @@ class GestionReporte:
         self.frame_botones = tk.Frame(self.root)
         self.frame_botones.pack(pady=10)
 
-        self.btn_inventario = tk.Button(self.frame_botones, text="INVENTARIO", command=self.mostrar_inventario)
+        self.btn_inventario = tk.Button(self.frame_botones, text="<INVENTARIO>", command=self.cargar_datos)
         self.btn_inventario.grid(row=0, column=0, padx=10)
 
-        self.btn_proveedor = tk.Button(self.frame_botones, text="PROVEEDOR", command=self.mostrar_proveedor)
+        self.btn_proveedor = tk.Button(self.frame_botones, text="<VER PROVEEDORES>", command=self.mostrar_proveedor)
         self.btn_proveedor.grid(row=0, column=1, padx=10)
 
-        self.btn_generar = tk.Button(self.frame_botones, text="GENERAR REPORTE", command=self.generar_reporte)
+        self.btn_generar = tk.Button(self.frame_botones, text="<GENERAR REPORTE>", command=self.generar_reporte)
         self.btn_generar.grid(row=0, column=2, padx=10)
 
-        self.btn_descargar = tk.Button(self.frame_botones, text="DESCARGAR REPORTE", command=self.descargar_reporte)
+        self.btn_descargar = tk.Button(self.frame_botones, text="<DESCARGAR REPORTE>", command=self.descargar_reporte)
         self.btn_descargar.grid(row=0, column=3, padx=10)
 
-        # Tabla de reporte
-        self.frame_tabla = tk.Frame(self.root)
-        self.frame_tabla.pack(fill=tk.BOTH, expand=True)
+        # Configuración del marco principal
+        self.frame = tk.Frame(self.root)
+        self.frame.pack(fill=tk.BOTH, expand=True)
 
-        self.tree = ttk.Treeview(self.frame_tabla, columns=("codigo", "nombre", "contacto", "direccion"), show='headings')
+        self.tree = ttk.Treeview(self.frame, columns=("codigo", "nombre", "categoria", "cantidad", "precio", "proveedor"), show='headings')
         self.tree.heading("codigo", text="Código")
         self.tree.heading("nombre", text="Nombre")
-        self.tree.heading("contacto", text="Contacto")
-        self.tree.heading("direccion", text="Dirección")
+        self.tree.heading("categoria", text="Categoría")
+        self.tree.heading("cantidad", text="Cantidad")
+        self.tree.heading("precio", text="Precio")
+        self.tree.heading("proveedor", text="Proveedor")
 
         self.tree.pack(fill=tk.BOTH, expand=True)
-        #self.cargar_datos_iniciales()
 
+        self.cargar_datos_iniciales()
         
+    def cargar_datos(self):
+        # Limpiar tabla actual
+        for row in self.tree.get_children():
+            self.tree.delete(row)
+        # Cargar productos desde la base de datos
+        productos = self.producto.obtener_productos()
+        for prod in productos:
+            self.tree.insert("", tk.END, values=prod)
 
     def cargar_datos_iniciales(self):
         # Cargar datos de ejemplo al iniciar
@@ -80,21 +92,8 @@ class GestionReporte:
         for dato in datos:
             self.tree.insert("", tk.END, values=dato)
 
-    def mostrar_inventario(self):
-        # Limpiar tabla y cargar datos de inventario (placeholder)
-        self.tree.delete(*self.tree.get_children())
-        datos_inventario = [
-            (1010, "Martillo", "50", "Almacén 1"),
-            (2020, "Taladro", "30", "Almacén 2"),
-            (3030, "Tornillos", "200", "Almacén 1"),
-            (4040, "Llave Inglesa", "15", "Almacén 2"),
-            (5050, "Cinta Métrica", "40", "Almacén 1")
-        ]
-        for dato in datos_inventario:
-            self.tree.insert("", tk.END, values=dato)
-
     def mostrar_proveedor(self):
-        self.gestion_proveedores = GestionProveedores(root)
+        self.gestion_proveedores = GestionProveedores(self.root)
         self.gestion_proveedores.cargar_datos()
 
     def on_closing(self, window):
@@ -108,13 +107,14 @@ class GestionReporte:
         categoria = self.categoria.get()
         reporte = GenerarReporte(fecha_desde, fecha_hasta, categoria)
         reporte.guardar_pdf()
-
         messagebox.showinfo("Generar Reporte", "Reporte generado exitosamente.")
 
     def descargar_reporte(self):
         # Obtener los datos de la tabla y descargar el reporte
-        datos = [self.tree.item(item)['values'] for item in self.tree.get_children()]
-        reporte = GenerarReporte(datos)
+        fecha_desde = self.fecha_desde.get_date()
+        fecha_hasta = self.fecha_hasta.get_date()
+        categoria = self.categoria.get()
+        reporte = GenerarReporte(fecha_desde, fecha_hasta, categoria)
         reporte.guardar_pdf()
         messagebox.showinfo("Descargar Reporte", "Reporte descargado exitosamente como 'reporte.pdf'.")
 
