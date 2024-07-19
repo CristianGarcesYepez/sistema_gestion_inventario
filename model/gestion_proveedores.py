@@ -32,8 +32,8 @@ class GestionProveedores:
         self.btn_eliminar.grid(row=0, column=2, padx=10)
 
         self.tree = ttk.Treeview(self.frame, columns =("id_proveedor","nombre_proveedor","direccion","contacto","email"), show='headings')
-        self.tree.heading("id_proveedor", text="Id_proveedor")
-        self.tree.heading("nombre_proveedor", text="nombre_proveedor")
+        self.tree.heading("id_proveedor", text="Codigo")
+        self.tree.heading("nombre_proveedor", text="Proveedor")
         self.tree.heading("direccion", text="Direccion")
         self.tree.heading("contacto", text="Contacto")
         self.tree.heading("email", text="Email")
