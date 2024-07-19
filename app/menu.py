@@ -10,7 +10,7 @@ class MenuPrincipal:
     def __init__(self, root):
         self.root = root
         self.root.title("FERRETERIA ARGAMASA")
-        self.root.geometry("500x500")
+        self.root.geometry("500x400")
         
 
         self.label_titulo = tk.Label(self.root, text="FERRETERIA ARGAMASA", font=("Arial", 24))
@@ -19,20 +19,20 @@ class MenuPrincipal:
         self.frame_botones = tk.Frame(self.root)
         self.frame_botones.pack(pady=20)
 
-        self.btn_inventario = tk.Button(self.frame_botones, text="INVENTARIO", command=self.abrir_inventario, width=30, height=2, cursor="hand2")
-        self.btn_inventario.grid(row=0, column=0, pady=5)
+        self.btn_inventario = tk.Button(self.frame_botones, text="INVENTARIO", font=("Arial", 10, "bold"), command=self.abrir_inventario, width=20, height=4, cursor="hand2")
+        self.btn_inventario.grid(row=0, column=1, padx=20 pady=10)
 
-        self.btn_categoria = tk.Button(self.frame_botones, text="CATEGORÍA", command=self.abrir_categoria, width=30, height=2, cursor="hand2")
-        self.btn_categoria.grid(row=0, column=1, padx=10, pady=10)
+        self.btn_categoria = tk.Button(self.frame_botones, text="CATEGORÍA", font=("Arial", 10, "bold"), command=self.abrir_categoria, width=20, height=4, cursor="hand2")
+        self.btn_categoria.grid(row=1, column=1, pady=10)
 
-        self.btn_proveedores = tk.Button(self.frame_botones, text="PROVEEDORES", command=self.abrir_proveedores, width=30, height=2, cursor="hand2")
-        self.btn_proveedores.grid(row=1, column=0, padx=10, pady=10)
+        self.btn_proveedores = tk.Button(self.frame_botones, text="PROVEEDORES", font=("Arial", 10, "bold"), command=self.abrir_proveedores, width=20, height=4, cursor="hand2")
+        self.btn_proveedores.grid(row=0, column=2, pady=10)
 
-        self.btn_reportes = tk.Button(self.frame_botones, text="REPORTES", command=self.abrir_reportes, width=30, height=2, cursor="hand2")
-2        self.btn_reportes.grid(row=1, column=1, padx=10, pady=10)
+        self.btn_reportes = tk.Button(self.frame_botones, text="REPORTES", font=("Arial", 10, "bold"), command=self.abrir_reportes, width=20, height=4, cursor="hand2")
+2        self.btn_reportes.grid(row=1, column=2, pady=10)
 
-        self.btn_salir = tk.Button(self.frame_botones, text="Salir", command=self.confirmar_salida, width=30, height=2, cursor="hand2")
-        self.btn_salir.grid(row=4, column=0, padx=10, pady=10)
+        self.btn_salir = tk.Button(self.frame_botones, text="Salir", font=("Arial", 10, "bold"), command=self.confirmar_salida, width=20, height=4, cursor="hand2")
+        self.btn_salir.grid(row=3, column=1, columnspan=2, padx=20, pady=10)
 
     def abrir_inventario(self):
         self.root.withdraw()  # Ocultar el menú principal
