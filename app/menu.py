@@ -20,7 +20,7 @@ class MenuPrincipal:
         self.frame_botones.pack(pady=20)
 
         self.btn_inventario = tk.Button(self.frame_botones, text="INVENTARIO", font=("Arial", 10, "bold"), command=self.abrir_inventario, width=20, height=4, cursor="hand2")
-        self.btn_inventario.grid(row=0, column=1, padx=20 pady=10)
+        self.btn_inventario.grid(row=0, column=1, padx=20, pady=10)
 
         self.btn_categoria = tk.Button(self.frame_botones, text="CATEGORÍA", font=("Arial", 10, "bold"), command=self.abrir_categoria, width=20, height=4, cursor="hand2")
         self.btn_categoria.grid(row=1, column=1, pady=10)
@@ -29,7 +29,7 @@ class MenuPrincipal:
         self.btn_proveedores.grid(row=0, column=2, pady=10)
 
         self.btn_reportes = tk.Button(self.frame_botones, text="REPORTES", font=("Arial", 10, "bold"), command=self.abrir_reportes, width=20, height=4, cursor="hand2")
-2        self.btn_reportes.grid(row=1, column=2, pady=10)
+        self.btn_reportes.grid(row=1, column=2, pady=10)
 
         self.btn_salir = tk.Button(self.frame_botones, text="Salir", font=("Arial", 10, "bold"), command=self.confirmar_salida, width=20, height=4, cursor="hand2")
         self.btn_salir.grid(row=3, column=1, columnspan=2, padx=20, pady=10)
@@ -59,10 +59,10 @@ class MenuPrincipal:
     def confirmar_salida(self):
         respuesta = messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas salir?")
         if respuesta:
- 8           self.root.quit()
+             self.root.quit()
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = MenuPrincipal(root)
     root.mainloop()
-8
+
