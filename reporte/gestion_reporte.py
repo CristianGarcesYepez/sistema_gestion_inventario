@@ -36,9 +36,14 @@ class GestionReporte:
         tk.Label(self.frame_filtros, text="]").grid(row=0, column=4)
 
         tk.Label(self.frame_filtros, text="Categoría:").grid(row=1, column=0, pady=5)
-        self.categoria = ttk.Combobox(self.frame_filtros, values=["Todas", "Herramientas", "Accesorios", "Medición"], state="readonly")
+        self.categoria = ttk.Combobox(self.frame_filtros, values=["Todas", "Herramientas Manuales", "Herramientas Eléctricas", "Fijaciones", "Materiales Eléctricos","Iluminación","Baterías"], state="readonly")
         self.categoria.grid(row=1, column=1, pady=5)
         self.categoria.set("Todas")
+
+        tk.Label(self.frame_filtros, text="Proveedores:").grid(row=1, column=4, pady=5)
+        self.proveedor = ttk.Combobox(self.frame_filtros, values=["Todos", "<Id-1>","<Id-2>","<Id-3>","<Id-4>","<Id-5>","<Id-6>","<Id-7>","<Id-8>","<Id-9>","<Id-10>","<Id-11>"], state="readonly")
+        self.proveedor.grid(row=1, column=5, pady=5)
+        self.proveedor.set("Todos")
 
         # Botones de acciones
         self.frame_botones = tk.Frame(self.root)
