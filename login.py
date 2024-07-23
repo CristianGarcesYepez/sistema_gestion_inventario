@@ -108,7 +108,7 @@ class LoginApp:
             messagebox.showerror("Login", "Usuario o contraseña incorrectos")  # Mensaje de error
 
     def iniciar_aplicacion_principal(self):
-        # Inicia el Menú principal
+        # Avanza hacia el Menú principal
         root = tk.Tk()
         app = MenuPrincipal(root)
         root.mainloop()
