@@ -43,10 +43,10 @@ class GestionInventario:
         self.label_buscar.grid(row=0, column=0, padx=20, pady=5, sticky=tk.W)
 
         # Campo de entrada para el nombre del producto a buscar
-        self.entry_buscar = tk.Entry(self.frame_busqueda, width=60)
+        self.entry_buscar = tk.Entry(self.frame_busqueda, width=70)
         self.entry_buscar.grid(row=0, column=1, padx=10, pady=5, sticky=tk.W+tk.E)
 
-        # Botón para ejecutar la búsqueda8
+        # Botón para ejecutar la búsqueda
         self.btn_buscar = tk.Button(self.frame_busqueda, text="Buscar", command=self.buscar_producto)
         self.btn_buscar.grid(row=0, column=2, padx=10, pady=5, sticky=tk.E)
 
@@ -95,7 +95,7 @@ class GestionInventario:
         self.tree.column("proveedor", width=100, anchor='center')
 
         # Coloca la tabla con un espacio reducido alrededor 
-        self.tree.pack(pady=10, fill=tk.BOTH, expand=False, padx=10)
+        self.tree.pack(pady=(50, 10), fill=tk.BOTH, expand=False, padx=10)
 
         # Llamar a la función para mostrar el logo
         self.mostrar_logo()
@@ -121,29 +121,21 @@ class GestionInventario:
         self.canvas.delete("bg_image")
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.bg_photo, tags="bg_image")
 
-    def crear_botones(self):
-        # Botones para añadir, editar, eliminar y actualizar productos
-        self.boton_agregar = tk.Button(self.canvas, text="AÑADIR PRODUCTO", command=self.agregar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.boton_agregar.grid(row=1, column=0, padx=20, pady=160, sticky="w")
-        
-        self.boton_editar = tk.Button(self.canvas, text="EDITAR PRODUCTO", command=self.editar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.boton_editar.grid(row=1, column=1, padx=20, pady=160, sticky="w")
-        
-        self.boton_eliminar = tk.Button(self.canvas, text="ELIMINAR PRODUCTO", command=self.eliminar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.boton_eliminar.grid(row=1, column=2, padx=20, pady=160, sticky="w")
-        
-        self.boton_actualizar = tk.Button(self.canvas, text="ACTUALIZAR TABLA", command=self.actualizar_tabla, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.boton_actualizar.grid(row=1, column=3, padx=20, pady=160, sticky="w")
 
-        # Configurar el grid del canvas para centrar los botones
-        self.canvas.grid_columnconfigure(0, weight=1)  
-        self.canvas.grid_columnconfigure(1, weight=1)  
-        self.canvas.grid_columnconfigure(2, weight=1)  
-        self.canvas.grid_columnconfigure(3, weight=1)  
-        self.canvas.grid_columnconfigure(4, weight=1)  
-        self.canvas.grid_rowconfigure(0, weight=1)  # Espacio arriba de los botones
-        self.canvas.grid_rowconfigure(1, weight=1)  # Fila de los botones
-        self.canvas.grid_rowconfigure(2, weight=1)  # Espacio debajo de los botones
+    
+    def crear_botones(self):
+      # Botones para añadir, editar, eliminar y actualizar productos
+       self.boton_agregar = tk.Button(self.canvas, text="AÑADIR PRODUCTO", command=self.agregar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+       self.canvas.create_window(150, 160, window=self.boton_agregar) 
+    
+       self.boton_editar = tk.Button(self.canvas, text="EDITAR PRODUCTO", command=self.editar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+       self.canvas.create_window(310, 160, window=self.boton_editar)  
+    
+       self.boton_eliminar = tk.Button(self.canvas, text="ELIMINAR PRODUCTO", command=self.eliminar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+       self.canvas.create_window(470, 160, window=self.boton_eliminar)  
+    
+       self.boton_actualizar = tk.Button(self.canvas, text="ACTUALIZAR TABLA", command=self.actualizar_tabla, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+       self.canvas.create_window(630, 160, window=self.boton_actualizar) 
 
     def mostrar_logo(self):
         try:
