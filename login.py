@@ -72,7 +72,7 @@ class LoginApp:
 
             # Calcula la posición para centrar la imagen
             x = (canvas_width - img_width) // 2
-            y = -200
+            y = -100
             
             self.canvas.delete("centered_image")  # Elimina la imagen centrada antigua
             self.canvas.create_image(x, y, anchor=tk.NW, image=centered_photo, tags="centered_image")
@@ -92,7 +92,7 @@ class LoginApp:
         self.entry_contrasena = tk.Entry(self.root, show="*", font=("Courier New", 11, "bold"))
         self.entry_contrasena.place(x=350, y=340)
 
-        self.btn_login = tk.Button(self.root, text="Ingresar", command=self.verificar_login, width=20, height=2, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
+        self.btn_login = tk.Button(self.root, text="INGRESAR", command=self.verificar_login, width=20, height=2, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
         self.btn_login.place(x=300, y=400)
 
     def verificar_login(self):

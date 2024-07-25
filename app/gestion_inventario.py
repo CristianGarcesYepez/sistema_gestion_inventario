@@ -120,9 +120,7 @@ class GestionInventario:
         
         self.canvas.delete("bg_image")
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.bg_photo, tags="bg_image")
-
-
-    
+        
     def crear_botones(self):
       # Botones para añadir, editar, eliminar y actualizar productos
        self.boton_agregar = tk.Button(self.canvas, text="AÑADIR PRODUCTO", command=self.agregar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
