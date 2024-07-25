@@ -1,56 +1,82 @@
-import tkinter as tk  # Importar el módulo tkinter para crear la interfaz gráfica
-from tkinter import ttk, messagebox  # Importar widgets adicionales y diálogos
+import tkinter as tk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from producto import Producto
 
 class GestionInventario:
     def __init__(self, root):
         self.root = root
-        self.root.title("Inventario - Ferretería Argamasa") # Título de la ventana principal
-        self.root.geometry("990x780")   # Tamaño de la ventana principal
-        
-        
+        self.root.title("Inventario - Ferretería Argamasa")
+        self.root.geometry("800x600")
+        self.root.resizable(True, True)
+        self.root.iconbitmap("recursos/LOGO.ico")
+
         self.producto = Producto()
-        
+
         # Crear un canvas para colocar elementos gráficos
-        self.canvas = tk.Canvas(self.root, width=990, height=780)
+        self.canvas = tk.Canvas(self.root, width=800, height=600)
         self.canvas.pack(fill=tk.BOTH, expand=True)
-        
+
+        # Crear el marco para los controles
+        self.frame = tk.Frame(self.canvas, bg="")
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.9, relheight=0.9)
+
         # Cargar y establecer la imagen de fondo
         self.cargar_imagen_fondo()
-        self.actualizar_imagen_fondo()
-        
-        # Crear el marco para los controles
-        self.frame = tk.Frame(self.canvas, bg="#FFFFFF")
-        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.9, relheight=0.9)
-        
-        # Título de la ventana
-        self.label_titulo = tk.Label(self.frame, text="INVENTARIO", font=("Arial", 24, "bold"), bg="#FFFFFF")
-        self.label_titulo.pack(pady=10)
-        
+
+        # Título de la ventana directamente en el canvas
+        self.canvas.create_text(400, 50, text="INVENTARIO", font=("Arial", 30, "bold"), fill="black", anchor=tk.CENTER)
+
         # Contenedor de botones de acción
-        self.frame_botones = tk.Frame(self.frame, bg="#FFFFFF")
-        self.frame_botones.pack(pady=10)
-        
+        self.frame_botones = tk.Frame(self.frame)
+        self.frame_botones.pack(pady=60)
+
         # Botones de acción
-        self.create_buttons()
-        
+        self.crear_botones()
+
         # Contenedor para la búsqueda de productos
-        self.frame_busqueda = tk.Frame(self.frame, bg="#FFFFFF")
-        self.frame_busqueda.pack(pady=10)
-        
+        self.frame_busqueda = tk.Frame(self.frame, bg="#DCD2F0")
+        self.frame_busqueda.place(relx=0.5, rely=0.15, anchor=tk.CENTER)
+
         # Etiqueta para el campo de búsqueda
-        self.label_buscar = tk.Label(self.frame_busqueda, text="Buscar Producto:", bg="#FFFFFF")
-        self.label_buscar.grid(row=0, column=0, padx=10)
-        
+        self.label_buscar = tk.Label(self.frame_busqueda, text="Buscar Producto", bg="#DCD2F0", font=("Arial", 12, "bold"))
+        self.label_buscar.grid(row=0, column=0, padx=20, pady=5, sticky=tk.W)
+
         # Campo de entrada para el nombre del producto a buscar
-        self.entry_buscar = tk.Entry(self.frame_busqueda, width=30)
-        self.entry_buscar.grid(row=0, column=1, padx=10)
-        
-        # Botón para ejecutar la búsqueda
-        self.btn_buscar = tk.Button(self.frame_busqueda, text="Buscar", command=self.buscar_producto, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.btn_buscar.grid(row=0, column=2, padx=10)
-        
+        self.entry_buscar = tk.Entry(self.frame_busqueda, width=60)
+        self.entry_buscar.grid(row=0, column=1, padx=10, pady=5, sticky=tk.W+tk.E)
+
+        # Botón para ejecutar la búsqueda8
+        self.btn_buscar = tk.Button(self.frame_busqueda, text="Buscar", command=self.buscar_producto)
+        self.btn_buscar.grid(row=0, column=2, padx=10, pady=5, sticky=tk.E)
+
+        # Estilo a Tabla
+        estilo = ttk.Style()
+        estilo.theme_use("default")
+        estilo.configure("Treeview", 
+                         background="#f0f0f0", 
+                         foreground="black", 
+                         rowheight=25, 
+                         fieldbackground="white", 
+                         bordercolor="black",  
+                         borderwidth=1,
+                         font=("Arial", 8))
+        estilo.map("Treeview", 
+                   background=[('selected', '#d3d3d3')], 
+                   foreground=[('selected', 'black')])
+        estilo.configure("Treeview.Heading", font=("Arial", 9, "bold"), bordercolor="black", borderwidth=1)
+        estilo.layout("Treeview", [
+            ('Treeview.treearea', {'sticky': 'nswe'}),
+            ('Treeview.padding', {'sticky': 'nswe'}),
+            ('Treeview.cell', {'sticky': 'nswe', 'children': [
+                ('Treeitem.padding', {'sticky': 'nswe', 'children': [
+                    ('Treeitem.indicator', {'side': 'left', 'sticky': ''}),
+                    ('Treeitem.image', {'side': 'left', 'sticky': ''}),
+                    ('Treeitem.text', {'side': 'left', 'sticky': ''}),
+                ]}),
+            ]}),
+        ])
+
         # Tabla para mostrar los productos
         self.tree = ttk.Treeview(self.frame, columns=("codigo", "nombre", "categoria", "cantidad", "precio", "proveedor"), show='headings')
         self.tree.heading("codigo", text="Código")
@@ -59,8 +85,21 @@ class GestionInventario:
         self.tree.heading("cantidad", text="Cantidad")
         self.tree.heading("precio", text="Precio")
         self.tree.heading("proveedor", text="Proveedor")
-        self.tree.pack(fill=tk.BOTH, expand=True)
-        
+
+        # Configuración de las columnas 
+        self.tree.column("codigo", width=100, anchor='center')
+        self.tree.column("nombre", width=150, anchor='center')
+        self.tree.column("categoria", width=100, anchor='center')
+        self.tree.column("cantidad", width=80, anchor='center')
+        self.tree.column("precio", width=80, anchor='center')
+        self.tree.column("proveedor", width=100, anchor='center')
+
+        # Coloca la tabla con un espacio reducido alrededor 
+        self.tree.pack(pady=10, fill=tk.BOTH, expand=False, padx=10)
+
+        # Llamar a la función para mostrar el logo
+        self.mostrar_logo()
+
         # Cargar los datos iniciales
         self.cargar_datos()
 
@@ -81,20 +120,41 @@ class GestionInventario:
         
         self.canvas.delete("bg_image")
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.bg_photo, tags="bg_image")
-    
-    def create_buttons(self):
+
+    def crear_botones(self):
         # Botones para añadir, editar, eliminar y actualizar productos
-        self.btn_agregar = tk.Button(self.frame_botones, text="AÑADIR PRODUCTO", command=self.agregar_producto, width=20, height=2, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.btn_agregar.grid(row=0, column=0, padx=10)
+        self.boton_agregar = tk.Button(self.canvas, text="AÑADIR PRODUCTO", command=self.agregar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+        self.boton_agregar.grid(row=1, column=0, padx=20, pady=160, sticky="w")
         
-        self.btn_editar = tk.Button(self.frame_botones, text="EDITAR PRODUCTO", command=self.editar_producto, width=20, height=2, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.btn_editar.grid(row=0, column=1, padx=10)
+        self.boton_editar = tk.Button(self.canvas, text="EDITAR PRODUCTO", command=self.editar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+        self.boton_editar.grid(row=1, column=1, padx=20, pady=160, sticky="w")
         
-        self.btn_eliminar = tk.Button(self.frame_botones, text="ELIMINAR PRODUCTO", command=self.eliminar_producto, width=20, height=2, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.btn_eliminar.grid(row=0, column=2, padx=10)
+        self.boton_eliminar = tk.Button(self.canvas, text="ELIMINAR PRODUCTO", command=self.eliminar_producto, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+        self.boton_eliminar.grid(row=1, column=2, padx=20, pady=160, sticky="w")
         
-        self.btn_actualizar = tk.Button(self.frame_botones, text="ACTUALIZAR TABLA", command=self.actualizar_tabla, width=20, height=2, font=("Arial", 12, "bold"), bg="#DCD2F0", cursor="hand2")
-        self.btn_actualizar.grid(row=0, column=3, padx=10)
+        self.boton_actualizar = tk.Button(self.canvas, text="ACTUALIZAR TABLA", command=self.actualizar_tabla, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
+        self.boton_actualizar.grid(row=1, column=3, padx=20, pady=160, sticky="w")
+
+        # Configurar el grid del canvas para centrar los botones
+        self.canvas.grid_columnconfigure(0, weight=1)  
+        self.canvas.grid_columnconfigure(1, weight=1)  
+        self.canvas.grid_columnconfigure(2, weight=1)  
+        self.canvas.grid_columnconfigure(3, weight=1)  
+        self.canvas.grid_columnconfigure(4, weight=1)  
+        self.canvas.grid_rowconfigure(0, weight=1)  # Espacio arriba de los botones
+        self.canvas.grid_rowconfigure(1, weight=1)  # Fila de los botones
+        self.canvas.grid_rowconfigure(2, weight=1)  # Espacio debajo de los botones
+
+    def mostrar_logo(self):
+        try:
+            # Cargar la imagen del logo
+            self.logo_image = Image.open("recursos/ARGAMASA_logo.png")
+            self.logo_photo = ImageTk.PhotoImage(self.logo_image)
+
+            # Colocar el logo debajo del widget Treeview
+            self.canvas.create_image(400, 525, image=self.logo_photo, anchor=tk.CENTER)
+        except Exception as e:
+            print(f"Error al cargar el logo: {e}")
 
     def cargar_datos(self): # Obtiene los productos desde la base de datos y los agrega a la tabla
         for row in self.tree.get_children():
@@ -180,3 +240,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = GestionInventario(root)
     root.mainloop()
+
