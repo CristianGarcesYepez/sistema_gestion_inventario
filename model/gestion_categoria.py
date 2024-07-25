@@ -197,7 +197,7 @@ class GestionCategoria:
             except Exception as e:
                 messagebox.showerror("Error", f"Ocurrió un error: {e}")  # Mostrar mensaje de error
 
-        btn_confirmar = tk.Button(dialogo, text="Confirmar", command=on_confirmar)  # Botón para confirmar
+        btn_confirmar = tk.Button(dialogo, text="CONFIRMAR", command=on_confirmar)  # Botón para confirmar
         btn_confirmar.grid(row=1, column=0, columnspan=2, pady=10)  # Agregar el botón al diálogo
 
 # Código principal para ejecutar la aplicación

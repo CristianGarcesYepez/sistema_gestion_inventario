@@ -77,7 +77,8 @@ class GestionProveedores:
         self.tree.heading("direccion", text="Direccion")
         self.tree.heading("contacto", text="Contacto")
         self.tree.heading("email", text="Email")
-                # Configuración de las columnas 
+
+        # Configuración de las columnas 
         self.tree.column("id_proveedor", width=100, anchor='center')
         self.tree.column("nombre_proveedor", width=150, anchor='center')
         self.tree.column("direccion", width=100, anchor='center')
@@ -86,7 +87,7 @@ class GestionProveedores:
 
         self.tree.pack(pady=(120, 10), fill=tk.BOTH, expand=False, padx=10)  # Empaquetar la tabla para llenar el espacio disponible
 
-        self.mostrar_logo()
+        self.mostrar_logo() #llamar a la funcion mostrar logo 
         self.cargar_datos()  # Cargar datos en la tabla al iniciar
 
     def cargar_imagen_fondo(self):

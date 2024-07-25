@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
+from PIL import Image, ImageTk
 from producto import Producto
 from generar_reporte import GenerarReporte
 from gestion_proveedores import GestionProveedores
@@ -17,11 +18,13 @@ class GestionReporte:
         self.root = root
         self.root.title("Reportes - Ferretería Argamasa")  # Establece el título de la ventana
         self.root.geometry("800x600")  # Establece el tamaño de la ventana
+        self.root.resizable(False, False)
+        self.root.iconbitmap("recursos/LOGO.ico")
 
         self.producto = Producto()  # Instancia de la clase Producto
 
         # Título de la ventana
-        self.label_titulo = tk.Label(self.root, text="REPORTES", font=("Arial", 24))
+        self.label_titulo = tk.Label(self.root, text="REPORTES", font=("Arial", 24, "bold"))
         self.label_titulo.pack(pady=10)  # Coloca el título en la ventana
 
         # Filtros de fecha y categoría
@@ -56,24 +59,53 @@ class GestionReporte:
         self.frame_botones.pack(pady=10)  # Coloca el marco en la ventana
 
         # Botón para cargar datos
-        self.btn_inventario = tk.Button(self.frame_botones, text="<INVENTARIO>", command=self.cargar_datos)
+        self.btn_inventario = tk.Button(self.frame_botones, text="<INVENTARIO>", command=self.cargar_datos, width=17, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
         self.btn_inventario.grid(row=0, column=0, padx=10)
 
         # Botón para ver proveedores
-        self.btn_proveedor = tk.Button(self.frame_botones, text="<VER PROVEEDORES>", command=self.mostrar_proveedor)
+        self.btn_proveedor = tk.Button(self.frame_botones, text="<VER PROVEEDORES>", command=self.mostrar_proveedor, width=20, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
         self.btn_proveedor.grid(row=0, column=1, padx=10)
 
         # Botón para generar reporte
-        self.btn_generar = tk.Button(self.frame_botones, text="<GENERAR REPORTE>", command=self.generar_reporte)
+        self.btn_generar = tk.Button(self.frame_botones, text="<GENERAR REPORTE>", command=self.generar_reporte, width=20, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
         self.btn_generar.grid(row=0, column=2, padx=10)
 
         # Botón para descargar reporte
-        self.btn_descargar = tk.Button(self.frame_botones, text="<DESCARGAR REPORTE>", command=self.descargar_reporte)
+        self.btn_descargar = tk.Button(self.frame_botones, text="<DESCARGAR REPORTE>", command=self.descargar_reporte, width=20, height=2, font=("Arial", 10, "bold"), bg="#DCD2F0", cursor="hand2")
         self.btn_descargar.grid(row=0, column=3, padx=10)
 
         # Configuración de la tabla de datos
         self.frame = tk.Frame(self.root)  # Crea un marco para la tabla
         self.frame.pack(fill=tk.BOTH, expand=True)  # Coloca el marco en la ventana
+
+        # Estilo a Tabla
+        estilo = ttk.Style()
+        estilo.theme_use("default")
+        estilo.configure("Treeview", 
+                         background="#f0f0f0", 
+                         foreground="black", 
+                         rowheight=25, 
+                         fieldbackground="white", 
+                         bordercolor="black",  
+                         borderwidth=1,
+                         font=("Arial", 8))
+        estilo.map("Treeview", 
+                   background=[('selected', '#d3d3d3')], 
+                   foreground=[('selected', 'black')])
+        
+        estilo.configure("Treeview.Heading", font=("Arial", 9, "bold"), bordercolor="black", borderwidth=1)
+
+        estilo.layout("Treeview", [
+            ('Treeview.treearea', {'sticky': 'nswe'}),
+            ('Treeview.padding', {'sticky': 'nswe'}),
+            ('Treeview.cell', {'sticky': 'nswe', 'children': [
+                ('Treeitem.padding', {'sticky': 'nswe', 'children': [
+                    ('Treeitem.indicator', {'side': 'left', 'sticky': ''}),
+                    ('Treeitem.image', {'side': 'left', 'sticky': ''}),
+                    ('Treeitem.text', {'side': 'left', 'sticky': ''}),
+                ]}),
+            ]}),
+        ])
 
         self.tree = ttk.Treeview(self.frame, columns=("codigo", "nombre", "categoria", "cantidad", "precio", "proveedor"), show='headings')
         # Configuración de las columnas de la tabla
@@ -84,9 +116,30 @@ class GestionReporte:
         self.tree.heading("precio", text="Precio")
         self.tree.heading("proveedor", text="Proveedor")
 
-        self.tree.pack(fill=tk.BOTH, expand=True)  # Coloca la tabla en el marco
+        # Configuración de las columnas 
+        self.tree.column("codigo", width=100, anchor='center')
+        self.tree.column("nombre", width=150, anchor='center')
+        self.tree.column("categoria", width=100, anchor='center')
+        self.tree.column("cantidad", width=80, anchor='center')
+        self.tree.column("precio", width=80, anchor='center')
+        self.tree.column("proveedor", width=100, anchor='center')
+
+        self.tree.pack(pady=(30, 10), fill=tk.BOTH, expand=False, padx=10)  # Coloca la tabla en el marco
 
         self.cargar_datos_iniciales()  # Cargar datos iniciales en la tabla
+
+        self.mostrar_logo()
+
+    def mostrar_logo(self):
+        try:
+            # Cargar la imagen del logo
+            self.logo_image = Image.open("recursos/ARGAMASA_logo.png")
+            self.logo_photo = ImageTk.PhotoImage(self.logo_image)
+
+            # Colocar el logo debajo del widget Treeview
+            self.canvas.create_image(400, 525, image=self.logo_photo, anchor=tk.CENTER)
+        except Exception as e:
+            print(f"Error al cargar el logo: {e}")
 
     def cargar_datos(self):
         # Limpiar tabla actual
