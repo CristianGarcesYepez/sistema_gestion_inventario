@@ -18,7 +18,6 @@ class GestionReporte:
         self.root = root
         self.root.title("Reportes - Ferretería Argamasa")  # Establece el título de la ventana
         self.root.geometry("800x600")  # Establece el tamaño de la ventana
-        self.root.resizable(False, False)
         self.root.iconbitmap("recursos/LOGO.ico")
 
         self.producto = Producto()  # Instancia de la clase Producto

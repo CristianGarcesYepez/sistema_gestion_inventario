@@ -5,10 +5,10 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../app'))
 
 import tkinter as tk  # Importar el módulo tkinter para crear la interfaz gráfica
-from producto import Producto  # Importar la clase Producto desde el módulo producto
 from PIL import Image, ImageTk
 from tkinter import ttk, messagebox, simpledialog  # Importar widgets adicionales y diálogos
 from categoria import Categoria  # Importar la clase Categoria desde el módulo categoria
+from producto import Producto  # Importar la clase Producto desde el módulo producto
 
 # Clase para gestionar la ventana de categorías
 class GestionCategoria:
@@ -34,9 +34,8 @@ class GestionCategoria:
         # Cargar y establecer la imagen de fondo
         self.cargar_imagen_fondo()
 
-
         # Título de la ventana directamente en el canvas
-        self.canvas.create_text(400, 50, text="CATEGORÍAS", font=("Arial", 30, "bold"), fill="black", anchor=tk.CENTER)
+        self.canvas.create_text(400, 25, text="CATEGORÍAS", font=("Arial", 38, "bold"), fill="black", anchor=tk.CENTER)
 
         self.crear_botones()
 
@@ -131,7 +130,7 @@ class GestionCategoria:
             self.logo_image = Image.open("recursos/ARGAMASA_logo.png")
             self.logo_photo = ImageTk.PhotoImage(self.logo_image)
 
-            # Colocar el logo debajo del widget Treeview
+            # Colocar el logo en el canvas
             self.canvas.create_image(400, 525, image=self.logo_photo, anchor=tk.CENTER)
         except Exception as e:
             print(f"Error al cargar el logo: {e}")
@@ -144,7 +143,7 @@ class GestionCategoria:
             widget.destroy()  # Eliminar widgets antiguos del marco de categorías
         for cat in categorias:
             # Crear un botón para cada categoría que, al hacer clic, muestra los productos de esa categoría
-            btn_categoria = tk.Button(self.frame_categorias, text=cat[1], command=lambda c=cat[1]: self.mostrar_productos_categoria(c))
+            btn_categoria = tk.Button(self.frame_categorias, font=("Arial", 8, "bold"), bg="#DCD2F0", text=cat[1], command=lambda c=cat[1]: self.mostrar_productos_categoria(c))
             btn_categoria.pack(side=tk.LEFT, padx=5)  # Agrega el botón al marco de categorías con margen lateral
 
     def mostrar_productos_categoria(self, categoria):
@@ -169,39 +168,25 @@ class GestionCategoria:
         # Mostrar un diálogo para confirmar la eliminación de una categoría
         nombre_categoria = simpledialog.askstring("Eliminar Categoría", "Ingrese el nombre de la categoría a eliminar:")
         if nombre_categoria:
-            if messagebox.askyesno("Confirmación", f"¿Estás seguro de eliminar la categoría '{nombre_categoria}'?"):
-                self.categoria.eliminar_categoria(nombre_categoria)
-                self.cargar_categorias()  # Recargar las categorías después de eliminar
-
-    def dialogo_categoria(self, titulo, accion, nombre_actual=None):
-        # Crear un diálogo para ingresar o editar el nombre de una categoría
-        dialogo = tk.Toplevel(self.root)
-        dialogo.title(titulo)  # Establecer el título del diálogo
-
-        tk.Label(dialogo, text="Nombre de la Categoría:").grid(row=0, column=0, pady=5)  # Etiqueta para el nombre
-        entrada = tk.Entry(dialogo)  # Campo de entrada para el nombre de la categoría
-        entrada.grid(row=0, column=1, pady=5)
-        if nombre_actual:
-            entrada.insert(0, nombre_actual)  # Rellenar el campo si se está editando una categoría
-
-        def on_confirmar():
-            # Acción al confirmar el diálogo
-            try:
-                nombre_categoria = entrada.get()
-                if nombre_actual:
-                    accion(nombre_actual, nombre_categoria)  # Editar una categoría existente
+            confirmacion = messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar la categoría '{nombre_categoria}'?")
+            if confirmacion:
+                if self.categoria.eliminar_categoria(nombre_categoria):
+                    messagebox.showinfo("Categoría Eliminada", "Categoría eliminada exitosamente.")
+                    self.cargar_categorias()
                 else:
-                    accion(nombre_categoria)  # Añadir una nueva categoría
-                self.cargar_categorias()  # Recargar las categorías después de añadir o editar
-                dialogo.destroy()  # Cerrar el diálogo
-            except Exception as e:
-                messagebox.showerror("Error", f"Ocurrió un error: {e}")  # Mostrar mensaje de error
+                    messagebox.showerror("Error", "No se pudo eliminar la categoría. Asegúrese de que no tenga productos asociados.")
 
-        btn_confirmar = tk.Button(dialogo, text="CONFIRMAR", command=on_confirmar)  # Botón para confirmar
-        btn_confirmar.grid(row=1, column=0, columnspan=2, pady=10)  # Agregar el botón al diálogo
+    def dialogo_categoria(self, titulo, accion, nombre_categoria=None):
+        # Mostrar un cuadro de diálogo para añadir o editar una categoría
+        nuevo_nombre = simpledialog.askstring(titulo, "Ingrese el nombre de la categoría:", initialvalue=nombre_categoria)
+        if nuevo_nombre:
+            if accion(nuevo_nombre):
+                messagebox.showinfo("Éxito", f"Categoría '{nuevo_nombre}' añadida/editada exitosamente.")
+                self.cargar_categorias()
+            else:
+                messagebox.showerror("Error", "No se pudo añadir/editar la categoría. Verifique los datos e intente nuevamente.")
 
-# Código principal para ejecutar la aplicación
 if __name__ == "__main__":
     root = tk.Tk()  # Crear la ventana principal de la aplicación
     app = GestionCategoria(root)  # Crear una instancia de la clase GestionCategoria
-    root.mainloop()  # Ejecutar el bucle principal de la aplicación
+    root.mainloop()  # Iniciar el bucle principal de la aplicación
